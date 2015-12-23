@@ -89,7 +89,7 @@
       background-color: #CFC731;
 
   .demoItem
-    width 100px
+    min-width 100px
     margin-left: 3px;
     background-color white
     box-shadow 1px 1px 10px #969696
