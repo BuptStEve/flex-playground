@@ -86,4 +86,5 @@
     background-color #e1e1e1
     border-radius: 10px
     padding 5px
+    min-height 750px
 </style>
