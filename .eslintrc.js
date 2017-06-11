@@ -1,3 +1,10 @@
+/**
+ * @Author: steve
+ * @Date:   2017-Jun-10 11:45:13
+ * @Last modified by:   steve
+ * @Last modified time: 2017-Jun-10 12:07:54
+ */
+
 // http://eslint.org/docs/user-guide/configuring
 
 module.exports = {
@@ -22,6 +29,7 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    "comma-dangle": ["error", "always-multiline"],
   }
 }

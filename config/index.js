@@ -1,3 +1,10 @@
+/**
+ * @Author: steve
+ * @Date:   2017-Jun-10 11:45:13
+ * @Last modified by:   steve
+ * @Last modified time: 2017-Jun-10 12:00:05
+ */
+
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
@@ -24,7 +31,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8080,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
