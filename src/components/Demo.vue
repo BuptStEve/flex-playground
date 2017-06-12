@@ -1,13 +1,18 @@
 <template lang="pug">
-  div(:style="{'flex': width}").container
+  div.demo-container(:style="demoContainerStyle")
     span.title
-      h2(style="display: inline-block; width: 100%;") {{ title }}
-      button(style="position: absolute; margin: 30px 0 0 -100px; font-size: 23px; color: #0bf; background: 0 0; border: none; outline: none;", @click="addItem()") 添加元素
+      h2 {{ title }}
+      button.add-btn(@click="addItem") 添加元素
 
     div.divider
 
-    div#demo(:style="{'flex-direction': demoProps.fd, 'flex-wrap': demoProps.fw, 'justify-content': demoProps.jc, 'align-items': demoProps.ai, 'align-content': demoProps.ac}")
-      comp-demo-item(v-for="(n, index) in items", :key="n", :no="index", :uid="n")
+    div#demo(:style="demoStyle")
+      CompDemoItem(
+        v-for="(n, index) in items",
+        :key="n",
+        :no="index",
+        :uid="n"
+      )
 </template>
 
 <script>
@@ -54,17 +59,24 @@ export default {
 
   created () {
     EventHub.$on('item-delete', (theUID) => {
-      let theNum = -1
-
-      this.items.forEach((el, index) => {
-        if (el === theUID) {
-          theNum = index
-          return
-        }
-      })
-
-      this.items.splice(theNum, 1)
+      this.items = this.items
+        .filter(item => theUID !== item)
     })
+  },
+
+  computed: {
+    demoContainerStyle () {
+      return { flex: this.width }
+    },
+    demoStyle () {
+      return {
+        'flex-direction': this.demoProps.fd,
+        'flex-wrap': this.demoProps.fw,
+        'justify-content': this.demoProps.jc,
+        'align-items': this.demoProps.ai,
+        'align-content': this.demoProps.ac,
+      }
+    },
   },
 
   methods: {
@@ -79,24 +91,47 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.container {
+<style lang="scss" scoped>
+.demo-container {
   display: flex;
+
   flex-flow: column;
-  padding: 5px;
-}
 
-.title {
-  flex: 0 1 auto;
-}
+  .title {
+    position: relative;
 
-#demo {
-  flex: 1;
-  box-shadow: 1px 1px 10px #969696;
-  display: flex;
-  background-color: #e1e1e1;
-  border-radius: 10px;
-  padding: 5px;
-  min-height: 750px;
+    display: inline-block;
+
+    width: 100%;
+
+    flex: 0 1 auto;
+  }
+
+  .add-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    color: #0bf;
+    border: none;
+    outline: none;
+    background: 0 0;
+
+    font-size: 23px;
+  }
+
+  #demo {
+    display: flex;
+
+    min-height: 750px;
+    margin: 5px;
+    padding: 5px;
+
+    border-radius: 10px;
+    background-color: #e1e1e1;
+    box-shadow: 1px 1px 10px #969696;
+
+    flex: 1;
+  }
 }
 </style>

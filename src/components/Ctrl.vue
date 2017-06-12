@@ -1,117 +1,38 @@
 <template lang="pug">
-  div(:style="{'flex': '100' - width}").container
+  div.ctrl-container(:style="ctrlContainerStyle")
     span.title
       h2 {{ title }}
     div.divider
 
     ul#ctrl
-      li.ctrlItem
-        h3 Demo 宽度设置：{{ width }}%
-        input(style='width: 450px', type='range', min='20', max='75', v-model="width" @change="widthOnChange" lazy)
+      li.ctrl-item
+        h3 Demo 宽度设置：{{ `${width}%` }}
+        input.width-input(type='range', min='20', max='75', v-model="width" @change="widthOnChange" lazy)
 
-      li.ctrlItem
+      li.ctrl-item
         h3 弹性容器的属性说明
         ul
-          li flex-flow: flex-direction 和 flex-wrap 的缩写形式;
-          li flex-direction: 设置主轴方向，确定弹性子元素的排列方式;
-          li flex-wrap: 当弹性子元素超出弹性容器范围时是否换行;
-          li justify-content: 主轴上的对齐方式;
-          li align-items: 侧轴上的对齐方式;
-          li align-content: 当侧轴上有空间时，侧轴的对齐方式;
+          li(v-for="desc in containerDescArr") {{ desc }}
 
-      li.ctrlItem
+      li.ctrl-item
         h3 弹性容器属性设置
-        div.demoProps
-          div.containerPropItem
-            span flex-direction
-            div.ctrlPropItem
-              input(type='radio', id='fd-row', value='row', v-model="demoProps.fd")
-              label(for='fd-row') row
-            div.ctrlPropItem
-              input(type='radio', id='fd-row-reverse', value='row-reverse', v-model="demoProps.fd")
-              label(for='fd-row-reverse') row-reverse
-            div.ctrlPropItem
-              input(type='radio', id='fd-column', value='column', v-model="demoProps.fd")
-              label(for='fd-column') column
-            div.ctrlPropItem
-              input(type='radio', id='fd-column-reverse', value='column-reverse', v-model="demoProps.fd")
-              label(for='fd-column-reverse') column-reverse
-            div.oneMoreThing
-              span.oneMoreThingText 第一个为默认值！
-          div.containerPropItem
-            span flex-wrap
-            div.ctrlPropItem
-              input(type='radio', id='fw-nowrap', value='nowrap', v-model="demoProps.fw")
-              label(for='fw-nowrap') nowrap
-            div.ctrlPropItem
-              input(type='radio', id='fw-wrap', value='wrap', v-model="demoProps.fw")
-              label(for='fw-wrap') wrap
-            div.ctrlPropItem
-              input(type='radio', id='fw-wrap-reverse', value='wrap-reverse', v-model="demoProps.fw")
-              label(for='fw-wrap-reverse') wrap-reverse
-          div.containerPropItem
-            span justify-content
-            div.ctrlPropItem
-              input(type='radio', id='jc-flex-start', value='flex-start', v-model="demoProps.jc")
-              label(for='jc-flex-start') flex-start
-            div.ctrlPropItem
-              input(type='radio', id='jc-flex-end', value='flex-end', v-model="demoProps.jc")
-              label(for='jc-flex-end') flex-end
-            div.ctrlPropItem
-              input(type='radio', id='jc-center', value='center', v-model="demoProps.jc")
-              label(for='jc-center') center
-            div.ctrlPropItem
-              input(type='radio', id='jc-space-between', value='space-between', v-model="demoProps.jc")
-              label(for='jc-space-between') space-between
-            div.ctrlPropItem
-              input(type='radio', id='jc-space-around', value='space-around', v-model="demoProps.jc")
-              label(for='jc-space-around') space-around
-          div.containerPropItem
-            span align-items
-            div.ctrlPropItem
-              input(type='radio', id='ai-stretch', value='stretch', v-model="demoProps.ai")
-              label(for='ai-stretch') stretch
-            div.ctrlPropItem
-              input(type='radio', id='ai-flex-start', value='flex-start', v-model="demoProps.ai")
-              label(for='ai-flex-start') flex-start
-            div.ctrlPropItem
-              input(type='radio', id='ai-flex-end', value='flex-end', v-model="demoProps.ai")
-              label(for='ai-flex-end') flex-end
-            div.ctrlPropItem
-              input(type='radio', id='ai-center', value='center', v-model="demoProps.ai")
-              label(for='ai-center') center
-            div.ctrlPropItem
-              input(type='radio', id='ai-baseline', value='baseline', v-model="demoProps.ai")
-              label(for='ai-baseline') baseline
-          div.containerPropItem
-            span align-content
-            div.ctrlPropItem
-              input(type='radio', id='ac-stretch', value='stretch', v-model="demoProps.ac")
-              label(for='ac-stretch') stretch
-            div.ctrlPropItem
-              input(type='radio', id='ac-flex-start', value='flex-start', v-model="demoProps.ac")
-              label(for='ac-flex-start') flex-start
-            div.ctrlPropItem
-              input(type='radio', id='ac-flex-end', value='flex-end', v-model="demoProps.ac")
-              label(for='ac-flex-end') flex-end
-            div.ctrlPropItem
-              input(type='radio', id='ac-center', value='center', v-model="demoProps.ac")
-              label(for='ac-center') center
-            div.ctrlPropItem
-              input(type='radio', id='ac-space-between', value='space-between', v-model="demoProps.ac")
-              label(for='ac-space-between') space-between
-            div.ctrlPropItem
-              input(type='radio', id='ac-space-around', value='space-around', v-model="demoProps.ac")
-              label(for='ac-space-around') space-around
+          span.one-more-thing 第一个为默认值！
 
-      li.ctrlItem
+        div.demo-props
+          div.container-prop-item(v-for='item in containerFlexPropArr')
+            span {{ item.name }}
+            div.ctrl-prop-item(v-for='value in item.itemValues')
+              input(
+                type='radio',
+                :id='`${item.prefix}-${value}`',
+                :value='value',
+                v-model='demoProps[item.prefix]'
+              )
+              label(:for='`${item.prefix}-${value}`') {{ value }}
+
+      li.ctrl-item
         h3 弹性子元素的属性说明
-        ul
-          li order: 子元素间的排列顺序;
-          li flex-grow: 扩展比率，算法为当前元素的值为分子，所有元素的该值作为分母，来分配多余的空间（数值越大扩展越多）;
-          li flex-shrink: 收缩比率，算法同上，按比率收缩（数值越大收缩越多）;
-          li flex-basis: 伸缩前的默认大小值，相当于 width/height 属性;
-          li align-self: 作用于当前子元素，覆盖 container 的 align-items 属性;
+        ul(v-for="desc in itemDescArr") {{ desc }}
 </template>
 
 <script>
@@ -124,6 +45,76 @@ export default {
     return {
       title: 'Ctrl',
       width: 60,
+      containerDescArr: [
+        `flex-flow: flex-direction 和 flex-wrap 的缩写形式;`,
+        `flex-direction: 设置主轴方向，确定弹性子元素的排列方式;`,
+        `flex-wrap: 当弹性子元素超出弹性容器范围时是否换行;`,
+        `justify-content: 主轴上的对齐方式;`,
+        `align-items: 侧轴上的对齐方式;`,
+        `align-content: 当侧轴上有空间时，侧轴的对齐方式;`,
+      ],
+      containerFlexPropArr: [
+        {
+          prefix: 'fd',
+          name: 'flex-direction',
+          itemValues: [
+            'row',
+            'row-reverse',
+            'column',
+            'column-reverse',
+          ],
+        },
+        {
+          prefix: 'fw',
+          name: 'flex-wrap',
+          itemValues: [
+            'nowrap',
+            'wrap',
+            'wrap-reverse',
+          ],
+        },
+        {
+          prefix: 'jc',
+          name: 'justify-content',
+          itemValues: [
+            'flex-start',
+            'flex-end',
+            'center',
+            'space-between',
+            'space-around',
+          ],
+        },
+        {
+          prefix: 'ai',
+          name: 'align-items',
+          itemValues: [
+            'stretch',
+            'flex-start',
+            'flex-end',
+            'center',
+            'baseline',
+          ],
+        },
+        {
+          prefix: 'ac',
+          name: 'align-content',
+          itemValues: [
+            'stretch',
+            'flex-start',
+            'flex-end',
+            'center',
+            'space-between',
+            'space-around',
+          ],
+        },
+      ],
+      itemDescArr: [
+        `order: 子元素间的排列顺序;`,
+        `flex-grow: 扩展比率，算法为当前元素的值为分子，所有元素的该值作为分母，来分配多余的空间（数值越大扩展越多）;`,
+        `flex-shrink: 收缩比率，算法同上，按比率收缩（数值越大收缩越多）;`,
+        `flex-basis: 伸缩前的默认大小值，相当于 width/height 属性;`,
+        `align-self: 作用于当前子元素，覆盖 container 的 align-items 属性;`,
+      ],
     }
   },
 
@@ -152,6 +143,12 @@ export default {
     },
   },
 
+  computed: {
+    ctrlContainerStyle () {
+      return { flex: 100 - this.width }
+    },
+  },
+
   methods: {
     widthOnChange () {
       EventHub.$emit('ctrl-width-change', Number(this.width))
@@ -163,33 +160,42 @@ export default {
 <style lang="scss">
 #ctrl {
   display: flex;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
   flex-flow: column wrap;
   align-content: column;
-  list-style: none;
-  padding: 0;
-  margin: 0;
 
-  .ctrlItem {
+  .one-more-thing {
+    margin-left: 10px;
+
+    color: #000;
+
+    font-size: 16px;
+  }
+
+  .ctrl-item {
     flex: 1;
 
-    .demoProps {
+    .width-input {
+      width: 450px;
+    }
+
+    .demo-props {
       display: flex;
+
       flex-flow: wrap;
 
-      .containerPropItem {
+      .container-prop-item {
         display: flex;
-        flex: 1 1 auto;
-        flex-flow: column;
+
         margin-bottom: 10px;
 
-        .oneMoreThing {
-          display: flex;
-          flex: 1;
-
-          .oneMoreThingText {
-            align-self: flex-end;
-          }
-        }
+        flex: 1 1 auto;
+        flex-flow: column;
       }
     }
   }

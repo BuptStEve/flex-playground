@@ -1,34 +1,34 @@
 <template lang="pug">
-  div.demoItem(:style="{'order': itemProps.order, 'flex-grow': itemProps.flexGrow, 'flex-shrink': itemProps.flexShrink, 'flex-basis': itemProps.flexBasis, 'align-self': itemProps.alignSelf}")
-    div.demoPropItem(style="display: flex; justify-content: space-between;")
-      span.numBg {{ no }}
-      button.deleteBtn(@click="itemOnClick()") X
+  div.demo-item(:style="itemStyle")
 
-    div.demoPropItem
-      span.itemPropText order:
-      input(type='number', v-model="itemProps.order")
+    div.demo-prop-item.title
+      span.num-bg {{ no }}
+      button.delete-btn(@click="itemOnClick") X
 
-    div.demoPropItem
-      span.itemPropText flex-grow:
-      input(type='number', v-model="itemProps.flexGrow", min='0')
+    div.demo-prop-item
+      span.item-prop-text order:
+      input(type='number', v-model.number="order")
 
-    div.demoPropItem
-      span.itemPropText flex-shrink:
-      input(type='number', v-model="itemProps.flexShrink", min='0')
+    div.demo-prop-item
+      span.item-prop-text flex-grow:
+      input(type='number', v-model.number="flexGrow", min='0')
 
-    div.demoPropItem
-      span.itemPropText flex-basis:
-      input(v-model="itemProps.flexBasis", v-on:input="updateFlexBasis($event.target.value)" lazy)
+    div.demo-prop-item
+      span.item-prop-text flex-shrink:
+      input(type='number', v-model.number="flexShrink", min='0')
 
-    div.demoPropItem
-      span.itemPropText align-self:
-      select(v-model="itemProps.alignSelf")
-        option(alignSelf) auto
-        option flex-start
-        option flex-end
-        option center
-        option baseline
-        option stretch
+    div.demo-prop-item
+      span.item-prop-text flex-basis:
+      input(
+        ref="basisInput",
+        :value="flexBasis",
+        @change="updateFlexBasis($event.target.value)"
+      )
+
+    div.demo-prop-item
+      span.item-prop-text align-self:
+      select(v-model="alignSelf")
+        option(v-for="opt in alignSelfArr") {{ opt }}
 </template>
 
 <script>
@@ -37,23 +37,42 @@ import EventHub from './EventHub'
 export default {
   data () {
     return {
-      itemProps: {
-        order: 0,
-        flexGrow: 0,
-        flexShrink: 1,
-        flexBasis: 'auto',
-        alignSelf: 'auto',
-      },
+      order: 0,
+      flexGrow: 0,
+      flexShrink: 1,
+      flexBasis: 'auto',
+      alignSelf: 'auto',
+      alignSelfArr: [
+        'auto',
+        'flex-start',
+        'flex-end',
+        'center',
+        'baseline',
+        'stretch',
+      ],
     }
   },
 
   props: {
     no: {
       type: Number,
-      default: 1,
+      isRequired: true,
     },
     uid: {
       type: String,
+      isRequired: true,
+    },
+  },
+
+  computed: {
+    itemStyle () {
+      return {
+        'order': this.order,
+        'flex-grow': this.flexGrow,
+        'flex-shrink': this.flexShrink,
+        'flex-basis': this.flexBasis,
+        'align-self': this.alignSelf,
+      }
     },
   },
 
@@ -62,36 +81,28 @@ export default {
       EventHub.$emit('item-delete', this.uid)
     },
     updateFlexBasis (value) {
-      const number = +value.replace(/[^\d.]/g, '')
+      let tmpVal = this.flexBasis
+      const number = value.replace(/[^\d.]/g, '')
 
-      if (value === 'auto') return 'auto'
-      if (isNaN(number)) return this.itemProps.flexBasis
-      if (value.slice(-1) === '%') return `${number}%`
+      if (value === 'auto') {
+        tmpVal = 'auto'
+      } else if (value.slice(-1) === '%') {
+        tmpVal = `${number}%`
+      } else if (number !== '') {
+        tmpVal = `${number}px`
+      }
 
-      return `${number}px`
+      this.flexBasis = tmpVal
+      this.$refs.basisInput.value = tmpVal
     },
   },
-
-  // filters: {
-  //   flexBasisDisplay: {
-  //     write(val, oldVal) {
-  //       const number = +val.replace(/[^\d.]/g, '')
-  //
-  //       if (val === 'auto') return 'auto'
-  //       if (isNaN(number)) return oldVal
-  //       if (val.slice(-1) === '%') return `${number}%`
-  //
-  //       return `${number}px`
-  //     },
-  //   },
-  // },
 }
 </script>
 
 <style lang="scss">
 $bgLength: 20px;
 
-.demoItem {
+.demo-item {
   &:nth-child(6n) {
     background-color: #8370F4;
   }
@@ -112,41 +123,57 @@ $bgLength: 20px;
   }
 }
 
-.demoItem {
+.demo-item {
   min-width: 100px;
   margin-left: 3px;
+
+  border-radius: 5px;
   background-color: white;
   box-shadow: 1px 1px 10px #969696;
 
-  .demoPropItem {
+  .demo-prop-item {
     margin: 10px 5px;
 
-    .deleteBtn {
-      font-size: 17px;
-      line-height: 1;
-      color: #fff;
+    &.title {
+      display: flex;
+
+      justify-content: space-between;
+    }
+
+    .delete-btn {
       width: 20px;
       height: 20px;
-      background: 0 0;
+
+      color: #fff;
       border: none;
+      background: 0 0;
+
+      font-size: 17px;
+      line-height: 1;
     }
 
-    .numBg {
+    .num-bg {
       display: inline-block;
-      font-size: 17px;
-      color: white;
-      text-align: center;
+
       width: $bgLength;
       height: $bgLength;
+
+      text-align: center;
+
+      color: white;
+
+      font-size: 17px;
     }
 
-    .itemPropText {
+    .item-prop-text {
       display: block;
+
       color: white;
     }
 
     input, select {
       width: 90%;
+
       font-size: 20px;
     }
   }

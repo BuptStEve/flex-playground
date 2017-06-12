@@ -1,10 +1,11 @@
 <template lang="pug">
   div
     h1 {{ title }}
+
     div#container
-      CompDemo(:width="demoWidth", :demo-props="demoProps")
+      CompDemo(:width="demoWidth", :demoProps="demoProps")
       div.divider
-      CompCtrl(:demo-props.sync="demoProps")
+      CompCtrl(:demoProps="demoProps")
 </template>
 
 <script>
@@ -15,7 +16,7 @@ import EventHub from './EventHub'
 export default {
   data () {
     return {
-      title: 'Flex Demo',
+      title: 'Flex Playground',
       demoWidth: 60,
       demoProps: {
         fd: 'row',
@@ -41,17 +42,22 @@ export default {
 </script>
 
 <style lang="scss">
-
-$font-stack: Helvetica, sans-serif;
-
 body {
-  font: 100% font-stack;
-  background-color: #F9F9F9;
   color: black;
+  background-color: #F9F9F9;
+
+  font: 100% Helvetica, sans-serif;
 
   h1, h2 {
-    color: #0bf;
     text-align: center;
+
+    color: #0bf;
+  }
+
+  #container {
+    display: flex;
+
+    min-height: 500px;
   }
 
   h3 {
@@ -66,10 +72,4 @@ body {
     cursor: pointer;
   }
 }
-
-#container {
-  display: flex;
-  min-height: 500px;
-}
-
 </style>
