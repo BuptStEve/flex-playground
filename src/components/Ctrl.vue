@@ -7,7 +7,7 @@
     ul#ctrl
       li.ctrl-item
         h3 Demo 宽度设置：{{ `${width}%` }}
-        input.width-input(type='range', min='20', max='75', v-model="width" @change="widthOnChange" lazy)
+        input.width-input(type='range', min='20', max='75', v-model.lazy="width" @change="widthOnChange")
 
       li.ctrl-item
         h3 弹性容器的属性说明
@@ -32,7 +32,8 @@
 
       li.ctrl-item
         h3 弹性子元素的属性说明
-        ul(v-for="desc in itemDescArr") {{ desc }}
+        ul
+          li(v-for="desc in itemDescArr") {{ desc }}
 </template>
 
 <script>
@@ -162,7 +163,7 @@ export default {
   display: flex;
 
   margin: 0;
-  padding: 0;
+  padding: 10px;
 
   list-style: none;
 
