@@ -6,8 +6,8 @@
 
     ul#ctrl
       li.ctrl-item
-        h3 Demo 宽度设置：{{ `${width}%` }}
-        input.width-input(type='range', min='20', max='75', v-model.lazy="width" @change="widthOnChange")
+        h3 Demo 宽度设置：{{ `${demoWidth}%` }}
+        input.width-input(type='range', min='20', max='75', v-model.number.lazy="demoWidth" @change="widthOnChange")
 
       li.ctrl-item
         h3 弹性容器的属性说明
@@ -38,6 +38,7 @@
 
 <script>
 import EventHub from './EventHub'
+import { getValidDemoWidth } from '@/utils/'
 
 export default {
   name: 'Ctrl',
@@ -45,7 +46,7 @@ export default {
   data () {
     return {
       title: 'Ctrl',
-      width: 60,
+      demoWidth: 50,
       containerDescArr: [
         `flex-flow: flex-direction 和 flex-wrap 的缩写形式;`,
         `flex-direction: 设置主轴方向，确定弹性子元素的排列方式;`,
@@ -144,15 +145,23 @@ export default {
     },
   },
 
+  created () {
+    const { demoWidth = 50 } = this.$route.query
+    this.demoWidth = getValidDemoWidth(demoWidth)
+  },
+
   computed: {
     ctrlContainerStyle () {
-      return { flex: 100 - this.width }
+      return { flex: 100 - this.demoWidth }
     },
   },
 
   methods: {
     widthOnChange () {
-      EventHub.$emit('ctrl-width-change', Number(this.width))
+      EventHub.$emit('ctrl-width-change', this.demoWidth)
+      this.$router.push({
+        query: { demoWidth: this.demoWidth },
+      })
     },
   },
 }

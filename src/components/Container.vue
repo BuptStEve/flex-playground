@@ -3,7 +3,7 @@
     h1 {{ title }}
 
     div#container
-      CompDemo(:width="demoWidth", :demoProps="demoProps")
+      CompDemo(:demoProps="demoProps")
       div.divider
       CompCtrl(:demoProps="demoProps")
 </template>
@@ -11,13 +11,11 @@
 <script>
 import CompDemo from './Demo'
 import CompCtrl from './Ctrl'
-import EventHub from './EventHub'
 
 export default {
   data () {
     return {
       title: 'Flex Playground',
-      demoWidth: 60,
       demoProps: {
         fd: 'row',
         fw: 'nowrap',
@@ -29,9 +27,12 @@ export default {
   },
 
   created () {
-    EventHub.$on('ctrl-width-change', (width) => {
-      this.demoWidth = width
-    })
+    const { demoProps = '{}' } = this.$route.query
+
+    this.demoProps = {
+      ...this.demoProps,
+      ...JSON.parse(demoProps),
+    }
   },
 
   components: {

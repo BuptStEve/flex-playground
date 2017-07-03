@@ -19,20 +19,18 @@
 import uuid from 'uuid'
 import CompDemoItem from './Item'
 import EventHub from './EventHub'
+import { getValidDemoWidth } from '@/utils/'
 
 export default {
   data () {
     return {
       title: 'Demo',
       items: [uuid.v1()],
+      width: 50,
     }
   },
 
   props: {
-    width: {
-      type: Number,
-      default: 60,
-    },
     demoProps: {
       fd: {
         type: String,
@@ -62,6 +60,14 @@ export default {
       this.items = this.items
         .filter(item => theUID !== item)
     })
+
+    EventHub.$on('ctrl-width-change', (width) => {
+      this.width = width
+    })
+
+    const { demoWidth = 50 } = this.$route.query
+
+    this.width = getValidDemoWidth(demoWidth)
   },
 
   computed: {
