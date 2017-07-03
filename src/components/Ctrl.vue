@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.ctrl-container(:style="ctrlContainerStyle")
+  div.ctrl-container(:style='ctrlContainerStyle')
     span.title
       h2 {{ title }}
     div.divider
@@ -7,12 +7,12 @@
     ul#ctrl
       li.ctrl-item
         h3 Demo 宽度设置：{{ `${demoWidth}%` }}
-        input.width-input(type='range', min='20', max='75', v-model.number.lazy="demoWidth" @change="widthOnChange")
+        input.width-input(type='range', min='20', max='75', v-model.number.lazy='demoWidth' @change='widthOnChange')
 
       li.ctrl-item
         h3 弹性容器的属性说明
         ul
-          li(v-for="desc in containerDescArr") {{ desc }}
+          li(v-for='desc in containerDescArr') {{ desc }}
 
       li.ctrl-item
         h3 弹性容器属性设置
@@ -33,7 +33,7 @@
       li.ctrl-item
         h3 弹性子元素的属性说明
         ul
-          li(v-for="desc in itemDescArr") {{ desc }}
+          li(v-for='desc in itemDescArr') {{ desc }}
 </template>
 
 <script>

@@ -3,9 +3,9 @@
     h1 {{ title }}
 
     div#container
-      CompDemo(:demoProps="demoProps")
+      CompDemo(:demoProps='demoProps')
       div.divider
-      CompCtrl(:demoProps="demoProps")
+      CompCtrl(:demoProps='demoProps')
 </template>
 
 <script>

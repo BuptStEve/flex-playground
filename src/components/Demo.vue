@@ -1,17 +1,17 @@
 <template lang="pug">
-  div.demo-container(:style="demoContainerStyle")
+  div.demo-container(:style='demoContainerStyle')
     span.title
       h2 {{ title }}
-      button.add-btn(@click="addItem") 添加元素
+      button.add-btn(@click='addItem') 添加元素
 
     div.divider
 
-    div#demo(:style="demoStyle")
+    div#demo(:style='demoStyle')
       CompDemoItem(
-        v-for="(n, index) in items",
-        :key="n",
-        :no="index",
-        :uid="n"
+        v-for='(n, index) in items',
+        :key='n',
+        :no='index',
+        :uid='n'
       )
 </template>
 

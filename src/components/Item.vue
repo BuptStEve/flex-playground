@@ -1,34 +1,34 @@
 <template lang="pug">
-  div.demo-item(:style="itemStyle")
+  div.demo-item(:style='itemStyle')
 
     div.demo-prop-item.title
       span.num-bg {{ no }}
-      button.delete-btn(@click="itemOnClick") X
+      button.delete-btn(@click='itemOnClick') X
 
     div.demo-prop-item
       span.item-prop-text order:
-      input(type='number', v-model.number="order")
+      input(type='number', v-model.number='order')
 
     div.demo-prop-item
       span.item-prop-text flex-grow:
-      input(type='number', v-model.number="flexGrow", min='0')
+      input(type='number', v-model.number='flexGrow', min='0')
 
     div.demo-prop-item
       span.item-prop-text flex-shrink:
-      input(type='number', v-model.number="flexShrink", min='0')
+      input(type='number', v-model.number='flexShrink', min='0')
 
     div.demo-prop-item
       span.item-prop-text flex-basis:
       input(
-        ref="basisInput",
-        :value="flexBasis",
-        @change="updateFlexBasis($event.target.value)"
+        ref='basisInput',
+        :value='flexBasis',
+        @change='updateFlexBasis($event.target.value)'
       )
 
     div.demo-prop-item
       span.item-prop-text align-self:
-      select(v-model="alignSelf")
-        option(v-for="opt in alignSelfArr") {{ opt }}
+      select(v-model='alignSelf')
+        option(v-for='opt in alignSelfArr') {{ opt }}
 </template>
 
 <script>
