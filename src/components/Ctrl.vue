@@ -25,8 +25,9 @@
               input(
                 type='radio',
                 :id='`${item.prefix}-${value}`',
-                :value='value',
-                v-model='demoProps[item.prefix]'
+                value='value',
+                :checked='demoProps[item.prefix] === value'
+                @change='propOnChange({ [item.prefix]: value })'
               )
               label(:for='`${item.prefix}-${value}`') {{ value }}
 
@@ -160,7 +161,24 @@ export default {
     widthOnChange () {
       EventHub.$emit('ctrl-width-change', this.demoWidth)
       this.$router.push({
-        query: { demoWidth: this.demoWidth },
+        query: {
+          demoWidth: this.demoWidth,
+          demoProps: this.demoProps,
+        },
+      })
+    },
+    propOnChange (prop) {
+      const newDemoProps = {
+        ...this.demoProps,
+        ...prop,
+      }
+
+      EventHub.$emit('props-change', newDemoProps)
+      this.$router.push({
+        query: {
+          demoWidth: this.demoWidth,
+          demoProps: JSON.stringify(newDemoProps),
+        },
       })
     },
   },

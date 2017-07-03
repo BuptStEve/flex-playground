@@ -56,6 +56,10 @@ export default {
   },
 
   created () {
+    const { demoWidth = 50 } = this.$route.query
+
+    this.width = getValidDemoWidth(demoWidth)
+
     EventHub.$on('item-delete', (theUID) => {
       this.items = this.items
         .filter(item => theUID !== item)
@@ -64,10 +68,6 @@ export default {
     EventHub.$on('ctrl-width-change', (width) => {
       this.width = width
     })
-
-    const { demoWidth = 50 } = this.$route.query
-
-    this.width = getValidDemoWidth(demoWidth)
   },
 
   computed: {

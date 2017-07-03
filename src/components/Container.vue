@@ -11,6 +11,7 @@
 <script>
 import CompDemo from './Demo'
 import CompCtrl from './Ctrl'
+import EventHub from './EventHub'
 
 export default {
   data () {
@@ -33,6 +34,10 @@ export default {
       ...this.demoProps,
       ...JSON.parse(demoProps),
     }
+
+    EventHub.$on('props-change', (newDemoProps) => {
+      this.demoProps = newDemoProps
+    })
   },
 
   components: {
