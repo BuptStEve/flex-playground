@@ -162,8 +162,8 @@ export default {
       EventHub.$emit('ctrl-width-change', this.demoWidth)
       this.$router.push({
         query: {
+          ...this.$route.query,
           demoWidth: this.demoWidth,
-          demoProps: this.demoProps,
         },
       })
     },
@@ -176,7 +176,7 @@ export default {
       EventHub.$emit('props-change', newDemoProps)
       this.$router.push({
         query: {
-          demoWidth: this.demoWidth,
+          ...this.$route.query,
           demoProps: JSON.stringify(newDemoProps),
         },
       })
