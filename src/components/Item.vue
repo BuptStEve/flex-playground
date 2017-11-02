@@ -35,6 +35,8 @@
 import EventHub from './EventHub'
 
 export default {
+  name: 'Item',
+
   data () {
     return {
       order: 0,

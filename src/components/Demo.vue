@@ -17,15 +17,21 @@
 
 <script>
 import uuid from 'uuid'
-import CompDemoItem from './Item'
 import EventHub from './EventHub'
+import CompDemoItem from './Item'
 import { getValidDemoWidth } from '@/utils/'
 
 export default {
+  name: 'Demo',
+
+  components: {
+    CompDemoItem,
+  },
+
   data () {
     return {
       title: 'Demo',
-      items: [uuid.v1()],
+      items: [],
       width: 50,
     }
   },
@@ -56,9 +62,11 @@ export default {
   },
 
   created () {
-    const { demoWidth = 50 } = this.$route.query
+    const defaultItems = JSON.stringify([uuid.v1()])
+    const { demoWidth = 50, demoItems = defaultItems } = this.$route.query
 
     this.width = getValidDemoWidth(demoWidth)
+    this.items = JSON.parse(demoItems)
 
     EventHub.$on('item-delete', (theUID) => {
       this.items = this.items
@@ -76,11 +84,11 @@ export default {
     },
     demoStyle () {
       return {
-        'flex-direction': this.demoProps.fd,
         'flex-wrap': this.demoProps.fw,
-        'justify-content': this.demoProps.jc,
         'align-items': this.demoProps.ai,
         'align-content': this.demoProps.ac,
+        'flex-direction': this.demoProps.fd,
+        'justify-content': this.demoProps.jc,
       }
     },
   },
@@ -91,8 +99,15 @@ export default {
     },
   },
 
-  components: {
-    CompDemoItem,
+  watch: {
+    items (newVal) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          demoItems: JSON.stringify(newVal),
+        },
+      })
+    },
   },
 }
 </script>

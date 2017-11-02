@@ -6,6 +6,7 @@
       CompDemo(:demoProps='demoProps')
       div.divider
       CompCtrl(:demoProps='demoProps')
+
 </template>
 
 <script>
@@ -14,6 +15,13 @@ import CompCtrl from './Ctrl'
 import EventHub from './EventHub'
 
 export default {
+  name: 'Container',
+
+  components: {
+    CompDemo,
+    CompCtrl,
+  },
+
   data () {
     return {
       title: 'Flex Playground',
@@ -40,9 +48,15 @@ export default {
     })
   },
 
-  components: {
-    CompDemo,
-    CompCtrl,
+  watch: {
+    demoProps (newVal) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          demoProps: JSON.stringify(newVal),
+        },
+      })
+    },
   },
 }
 </script>

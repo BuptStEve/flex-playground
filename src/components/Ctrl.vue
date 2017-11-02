@@ -160,24 +160,18 @@ export default {
   methods: {
     widthOnChange () {
       EventHub.$emit('ctrl-width-change', this.demoWidth)
-      this.$router.push({
-        query: {
-          ...this.$route.query,
-          demoWidth: this.demoWidth,
-        },
-      })
     },
     propOnChange (prop) {
-      const newDemoProps = {
-        ...this.demoProps,
-        ...prop,
-      }
+      EventHub.$emit('props-change', { ...this.demoProps, ...prop })
+    },
+  },
 
-      EventHub.$emit('props-change', newDemoProps)
+  watch: {
+    demoWidth (newVal) {
       this.$router.push({
         query: {
           ...this.$route.query,
-          demoProps: JSON.stringify(newDemoProps),
+          demoWidth: newVal,
         },
       })
     },
