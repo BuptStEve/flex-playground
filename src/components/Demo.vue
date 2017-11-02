@@ -8,10 +8,11 @@
 
     div#demo(:style='demoStyle')
       CompDemoItem(
-        v-for='(n, index) in items',
-        :key='n',
-        :no='index',
-        :uid='n'
+        v-for='(uid, index) in items',
+        :key='uid',
+        :num='index',
+        :uid='uid'
+        :itemProps='itemProps[uid]'
       )
 </template>
 
@@ -32,6 +33,7 @@ export default {
     return {
       title: 'Demo',
       items: [],
+      itemProps: {},
       width: 50,
     }
   },
@@ -62,11 +64,18 @@ export default {
   },
 
   created () {
-    const defaultItems = JSON.stringify([uuid.v1()])
-    const { demoWidth = 50, demoItems = defaultItems } = this.$route.query
+    const { uid, itemProps } = this.getOneItem()
+    const defaultItems = JSON.stringify([uid])
+    const defaultItemProps = JSON.stringify({ [uid]: itemProps })
+    const {
+      demoWidth = 50,
+      demoItems = defaultItems,
+      demoItemProps = defaultItemProps,
+    } = this.$route.query
 
     this.width = getValidDemoWidth(demoWidth)
     this.items = JSON.parse(demoItems)
+    this.itemProps = JSON.parse(demoItemProps)
 
     EventHub.$on('item-delete', (theUID) => {
       this.items = this.items
@@ -94,8 +103,26 @@ export default {
   },
 
   methods: {
+    getOneItem () {
+      return {
+        uid: uuid.v1(),
+        itemProps: {
+          order: 0,
+          flexGrow: 0,
+          flexShrink: 1,
+          flexBasis: 'auto',
+          alignSelf: 'auto',
+        },
+      }
+    },
     addItem () {
-      this.items.push(uuid.v1())
+      const { uid, itemProps } = this.getOneItem()
+
+      this.items.push(uid)
+      this.itemProps = {
+        ...this.itemProps,
+        [uid]: itemProps,
+      }
     },
   },
 
@@ -107,6 +134,17 @@ export default {
           demoItems: JSON.stringify(newVal),
         },
       })
+    },
+    itemProps: {
+      deep: true,
+      handler (newVal) {
+        this.$router.push({
+          query: {
+            ...this.$route.query,
+            demoItemProps: JSON.stringify(newVal),
+          },
+        })
+      },
     },
   },
 }

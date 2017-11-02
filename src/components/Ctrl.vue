@@ -148,6 +148,7 @@ export default {
 
   created () {
     const { demoWidth = 50 } = this.$route.query
+
     this.demoWidth = getValidDemoWidth(demoWidth)
   },
 

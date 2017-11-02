@@ -2,32 +2,32 @@
   div.demo-item(:style='itemStyle')
 
     div.demo-prop-item.title
-      span.num-bg {{ no }}
+      span.num-bg {{ num }}
       button.delete-btn(@click='itemOnClick') X
 
     div.demo-prop-item
       span.item-prop-text order:
-      input(type='number', v-model.number='order')
+      input(type='number', v-model.number='itemProps.order')
 
     div.demo-prop-item
       span.item-prop-text flex-grow:
-      input(type='number', v-model.number='flexGrow', min='0')
+      input(type='number', v-model.number='itemProps.flexGrow', min='0')
 
     div.demo-prop-item
       span.item-prop-text flex-shrink:
-      input(type='number', v-model.number='flexShrink', min='0')
+      input(type='number', v-model.number='itemProps.flexShrink', min='0')
 
     div.demo-prop-item
       span.item-prop-text flex-basis:
       input(
         ref='basisInput',
-        :value='flexBasis',
+        :value='itemProps.flexBasis',
         @change='updateFlexBasis($event.target.value)'
       )
 
     div.demo-prop-item
       span.item-prop-text align-self:
-      select(v-model='alignSelf')
+      select(v-model='itemProps.alignSelf')
         option(v-for='opt in alignSelfArr') {{ opt }}
 </template>
 
@@ -39,11 +39,6 @@ export default {
 
   data () {
     return {
-      order: 0,
-      flexGrow: 0,
-      flexShrink: 1,
-      flexBasis: 'auto',
-      alignSelf: 'auto',
       alignSelfArr: [
         'auto',
         'flex-start',
@@ -56,7 +51,7 @@ export default {
   },
 
   props: {
-    no: {
+    num: {
       type: Number,
       isRequired: true,
     },
@@ -64,16 +59,41 @@ export default {
       type: String,
       isRequired: true,
     },
+    itemProps: {
+      order: {
+        type: Number,
+        default: 0,
+      },
+      flexGrow: {
+        type: Number,
+        default: 0,
+      },
+      flexShrink: {
+        type: Number,
+        default: 1,
+      },
+      flexBasis: {
+        type: [ Number, String ],
+        default: 'auto',
+      },
+      alignSelf: {
+        type: String,
+        default: 'auto',
+        validator (val) {
+          return this.alignSelfArr.includes(val)
+        },
+      },
+    },
   },
 
   computed: {
     itemStyle () {
       return {
-        'order': this.order,
-        'flex-grow': this.flexGrow,
-        'flex-shrink': this.flexShrink,
-        'flex-basis': this.flexBasis,
-        'align-self': this.alignSelf,
+        'order': this.itemProps.order,
+        'flex-grow': this.itemProps.flexGrow,
+        'align-self': this.itemProps.alignSelf,
+        'flex-basis': this.itemProps.flexBasis,
+        'flex-shrink': this.itemProps.flexShrink,
       }
     },
   },
@@ -83,7 +103,7 @@ export default {
       EventHub.$emit('item-delete', this.uid)
     },
     updateFlexBasis (value) {
-      let tmpVal = this.flexBasis
+      let tmpVal = this.itemProps.flexBasis
       const number = value.replace(/[^\d.]/g, '')
 
       if (value === 'auto') {
@@ -94,7 +114,7 @@ export default {
         tmpVal = `${number}px`
       }
 
-      this.flexBasis = tmpVal
+      this.itemProps.flexBasis = tmpVal
       this.$refs.basisInput.value = tmpVal
     },
   },
