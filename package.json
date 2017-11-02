@@ -1,6 +1,6 @@
 {
   "name": "vue2-flex-playground",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Flex demo using Webpack with vue-loader",
   "author": "Steve Young <2747745470@qq.com>",
   "private": true,

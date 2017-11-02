@@ -1,15 +1,8 @@
-<!--
-@Author: steve
-@Date:   2016-Dec-28 22:51:22
-@Last modified by:   steve
-@Last modified time: 2016-Dec-28 22:53:05
--->
-
 # css3 flex 的小 Demo
 基于 [Webpack](http://webpack.github.io) 和 [vue-loader](https://github.com/vuejs/vue-loader) 构建，依赖于：
 
-* [Vue 2 + Vue Router](http://vuejs.org/)：用于交互
-* [node-uuid](https://github.com/broofa/node-uuid)：用于产生 uuid ~~（看起来高端，其实没必要╮(╯_╰)╭ ）~~
+* [Vue 2](http://vuejs.org/)：基础框架
+* [Vue Router](https://router.vuejs.org/zh-cn/)：保存当前状态到 url 中，可直接发送链接给他人查看效果
 
 ## 一、弹性容器 flex container:
 ### 1. display:
