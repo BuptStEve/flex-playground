@@ -8,19 +8,18 @@
 
     div#demo(:style='demoStyle')
       CompDemoItem(
-        v-for='(uid, index) in items',
+        v-for='(uid, index) in demoItems',
         :key='uid',
         :num='index',
         :uid='uid'
-        :itemProps='itemProps[uid]'
+        :itemProps='demoItemProps[uid]'
       )
 </template>
 
 <script>
-import uuid from 'uuid'
 import EventHub from './EventHub'
 import CompDemoItem from './Item'
-import { getValidDemoWidth } from '@/utils/'
+import { genOneUid, getValidDemoWidth } from '@/utils/'
 
 export default {
   name: 'Demo',
@@ -32,8 +31,8 @@ export default {
   data () {
     return {
       title: 'Demo',
-      items: [],
-      itemProps: {},
+      demoItems: [],
+      demoItemProps: {},
       width: 50,
     }
   },
@@ -74,12 +73,16 @@ export default {
     } = this.$route.query
 
     this.width = getValidDemoWidth(demoWidth)
-    this.items = JSON.parse(demoItems)
-    this.itemProps = JSON.parse(demoItemProps)
+    this.demoItems = JSON.parse(demoItems)
+    this.demoItemProps = JSON.parse(demoItemProps)
 
     EventHub.$on('item-delete', (theUID) => {
-      this.items = this.items
+      this.demoItems = this.demoItems
         .filter(item => theUID !== item)
+
+      this.demoItemProps = Object.entries(this.demoItemProps)
+        .filter(([ key ]) => theUID !== key)
+        .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
     })
 
     EventHub.$on('ctrl-width-change', (width) => {
@@ -105,7 +108,7 @@ export default {
   methods: {
     getOneItem () {
       return {
-        uid: uuid.v1(),
+        uid: genOneUid(this.demoItems),
         itemProps: {
           order: 0,
           flexGrow: 0,
@@ -118,16 +121,16 @@ export default {
     addItem () {
       const { uid, itemProps } = this.getOneItem()
 
-      this.items.push(uid)
-      this.itemProps = {
-        ...this.itemProps,
+      this.demoItems.push(uid)
+      this.demoItemProps = {
+        ...this.demoItemProps,
         [uid]: itemProps,
       }
     },
   },
 
   watch: {
-    items (newVal) {
+    demoItems (newVal) {
       this.$router.push({
         query: {
           ...this.$route.query,
@@ -135,7 +138,7 @@ export default {
         },
       })
     },
-    itemProps: {
+    demoItemProps: {
       deep: true,
       handler (newVal) {
         this.$router.push({
