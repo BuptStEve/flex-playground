@@ -4,6 +4,8 @@
 * [Vue 2](http://vuejs.org/)：基础框架
 * [Vue Router](https://router.vuejs.org/zh-cn/)：保存当前状态到 url 中，可直接发送链接给他人查看效果
 
+![gif](https://github.com/BuptStEve/flex-playground/blob/master/static/flex-playground.gif)
+
 ## 一、弹性容器 flex container:
 ### 1. display:
 * 说明：首先必须设置该属性，才能应用 flex 的属性;
