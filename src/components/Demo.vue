@@ -73,8 +73,14 @@ export default {
     } = this.$route.query
 
     this.width = getValidDemoWidth(demoWidth)
-    this.demoItems = JSON.parse(demoItems)
-    this.demoItemProps = JSON.parse(demoItemProps)
+
+    try {
+      this.demoItems = JSON.parse(demoItems)
+      this.demoItemProps = JSON.parse(demoItemProps)
+    } catch (e) {
+      this.demoItems = JSON.parse(decodeURIComponent(demoItems))
+      this.demoItemProps = JSON.parse(decodeURIComponent(demoItemProps))
+    }
 
     EventHub.$on('item-delete', (theUID) => {
       this.demoItems = this.demoItems

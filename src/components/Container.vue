@@ -38,9 +38,16 @@ export default {
   created () {
     const { demoProps = '{}' } = this.$route.query
 
-    this.demoProps = {
-      ...this.demoProps,
-      ...JSON.parse(demoProps),
+    try {
+      this.demoProps = {
+        ...this.demoProps,
+        ...JSON.parse(demoProps),
+      }
+    } catch (e) {
+      this.demoProps = {
+        ...this.demoProps,
+        ...JSON.parse(decodeURIComponent(demoProps)),
+      }
     }
 
     EventHub.$on('props-change', (newDemoProps) => {
