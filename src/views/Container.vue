@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import CompDemo from './Demo'
-import CompCtrl from './Ctrl'
-import EventHub from './EventHub'
+import CompDemo from '@/components/Demo'
+import CompCtrl from '@/components/Ctrl'
+import EventHub from '@/components/EventHub'
 
 export default {
   name: 'Container',

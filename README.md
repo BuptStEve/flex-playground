@@ -1,10 +1,5 @@
 # css3 flex 的小 Demo
-基于 [Webpack](http://webpack.github.io) 和 [vue-loader](https://github.com/vuejs/vue-loader) 构建，依赖于：
-
-* [Vue 2](http://vuejs.org/)：基础框架
-* [Vue Router](https://router.vuejs.org/zh-cn/)：保存当前状态到 url 中，可直接发送链接给他人查看效果
-
-![gif](./static/flex-playground.gif)
+![gif](./flex-playground.gif)
 
 ## 一、弹性容器 flex container:
 ### 1. display:
